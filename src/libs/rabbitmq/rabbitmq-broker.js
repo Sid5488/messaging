@@ -1,7 +1,7 @@
 import { connect } from "amqplib/callback_api.js";
 
 class RabbitMQBroker {
-  send(topic, message) {
+  send({ topic, messages }) {
     connect("amqp://guest:guest@localhost", (error0, connection) => {
       if (error0) {
         throw error0;
@@ -16,8 +16,8 @@ class RabbitMQBroker {
           durable: false
         });
 
-        channel.sendToQueue(topic, Buffer.from(message));
-        console.log(`[x] Sent: ${message}`);
+        channel.sendToQueue(topic, Buffer.from(messages));
+        console.log(`[x] Sent: ${messages}`);
 
         setTimeout(() => connection.close(), 500);
       });
@@ -25,7 +25,7 @@ class RabbitMQBroker {
   }
 
   listen(topic) {
-    connect("amqp://localhost", (error0, connection) => {
+    connect("amqp://guest:guest@localhost", (error0, connection) => {
       if (error0) {
         throw error0;
       }

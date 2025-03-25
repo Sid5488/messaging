@@ -14,8 +14,9 @@ async function main() {
   await messageBroker.listen("topic-test");
 
   const rabbitmqBroker = new RabbitMQBroker();
-  rabbitmqBroker.send("topic-test", "Rabbit message");
-  rabbitmqBroker.listen("topic-test");
+  const rabbitMessageBroker = new MessageBroker(rabbitmqBroker);
+  rabbitMessageBroker.send({ topic: "topic-test", messages: "Rabbit message" });
+  rabbitMessageBroker.listen("topic-test");
 }
 
 main();
